@@ -1,48 +1,95 @@
+import java.util.ArrayDeque;
+import java.util.Deque;
+import java.util.Stack;
+
 /**
- * UC11 - Encapsulation of Palindrome Logic
- * Demonstrates OOP concepts such as encapsulation
- * and single responsibility principle.
- *
- * @author Yuvashree
- * @version 1.0
+ * PalindromeStrategy interface
+ * Defines the contract for palindrome checking algorithms
  */
+interface PalindromeStrategy {
+    boolean checkPalindrome(String text);
+}
 
-class PalindromeChecker {
+/**
+ * Stack-based palindrome strategy
+ */
+class StackStrategy implements PalindromeStrategy {
 
-    // Method that checks if a string is a palindrome
     public boolean checkPalindrome(String text) {
 
-        text = text.replaceAll("\\s+", "").toLowerCase();
+        Stack<Character> stack = new Stack<>();
 
-        int start = 0;
-        int end = text.length() - 1;
+        for (char c : text.toCharArray()) {
+            stack.push(c);
+        }
 
-        while (start < end) {
-
-            if (text.charAt(start) != text.charAt(end)) {
+        for (char c : text.toCharArray()) {
+            if (c != stack.pop()) {
                 return false;
             }
-
-            start++;
-            end--;
         }
 
         return true;
     }
 }
 
+/**
+ * Deque-based palindrome strategy
+ */
+class DequeStrategy implements PalindromeStrategy {
+
+    public boolean checkPalindrome(String text) {
+
+        Deque<Character> deque = new ArrayDeque<>();
+
+        for (char c : text.toCharArray()) {
+            deque.addLast(c);
+        }
+
+        while (deque.size() > 1) {
+
+            if (!deque.removeFirst().equals(deque.removeLast())) {
+                return false;
+            }
+        }
+
+        return true;
+    }
+}
+
+/**
+ * Context class that uses strategy
+ */
+class PalindromeChecker {
+
+    private PalindromeStrategy strategy;
+
+    public PalindromeChecker(PalindromeStrategy strategy) {
+        this.strategy = strategy;
+    }
+
+    public boolean check(String text) {
+        return strategy.checkPalindrome(text);
+    }
+}
+
+/**
+ * Application entry point
+ */
 public class PalindromeCheckerApp {
 
     public static void main(String[] args) {
 
-        PalindromeChecker checker = new PalindromeChecker();
+        String word = "level";
 
-        String input = "Madam";
+        // Choose strategy dynamically
+        PalindromeChecker checker =
+                new PalindromeChecker(new StackStrategy());
 
-        if (checker.checkPalindrome(input)) {
-            System.out.println(input + " is a Palindrome");
+        if (checker.check(word)) {
+            System.out.println(word + " is a Palindrome");
         } else {
-            System.out.println(input + " is NOT a Palindrome");
+            System.out.println(word + " is NOT a Palindrome");
         }
     }
 }
