@@ -1,6 +1,6 @@
 /**
- * UC9 - Recursive Palindrome Checker
- * Checks whether a string is a palindrome using recursion.
+ * UC10 - Palindrome Checker ignoring spaces and case
+ * Demonstrates string preprocessing before checking palindrome.
  *
  * @author Yuvashree
  * @version 1.0
@@ -8,33 +8,36 @@
 
 public class PalindromeCheckerApp {
 
-    // Recursive palindrome check
-    public static boolean isPalindrome(String text, int start, int end) {
+    // Method to check palindrome after preprocessing
+    public static boolean isPalindrome(String text) {
 
-        // Base condition
-        if (start >= end) {
-            return true;
+        // Normalize string: remove spaces and convert to lowercase
+        text = text.replaceAll("\\s+", "").toLowerCase();
+
+        int start = 0;
+        int end = text.length() - 1;
+
+        while (start < end) {
+
+            if (text.charAt(start) != text.charAt(end)) {
+                return false;
+            }
+
+            start++;
+            end--;
         }
 
-        // Compare characters
-        if (text.charAt(start) != text.charAt(end)) {
-            return false;
-        }
-
-        // Recursive call
-        return isPalindrome(text, start + 1, end - 1);
+        return true;
     }
 
     public static void main(String[] args) {
 
-        String word = "racecar";
+        String input = "Never Odd Or Even";
 
-        boolean result = isPalindrome(word, 0, word.length() - 1);
-
-        if (result) {
-            System.out.println(word + " is a Palindrome");
+        if (isPalindrome(input)) {
+            System.out.println("\"" + input + "\" is a Palindrome");
         } else {
-            System.out.println(word + " is NOT a Palindrome");
+            System.out.println("\"" + input + "\" is NOT a Palindrome");
         }
     }
 }
