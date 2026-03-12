@@ -1,21 +1,34 @@
-import java.util.ArrayDeque;
-import java.util.Deque;
 import java.util.Stack;
 
 /**
- * PalindromeStrategy interface
- * Defines the contract for palindrome checking algorithms
+ * UC13 - Performance comparison of palindrome algorithms
+ * Measures execution time of different approaches.
+ *
+ * @author Yuvashree
+ * @version 1.0
  */
-interface PalindromeStrategy {
-    boolean checkPalindrome(String text);
-}
 
-/**
- * Stack-based palindrome strategy
- */
-class StackStrategy implements PalindromeStrategy {
+public class PalindromeCheckerApp {
 
-    public boolean checkPalindrome(String text) {
+    // Two pointer method
+    public static boolean twoPointerCheck(String text) {
+
+        int start = 0;
+        int end = text.length() - 1;
+
+        while (start < end) {
+            if (text.charAt(start) != text.charAt(end)) {
+                return false;
+            }
+            start++;
+            end--;
+        }
+
+        return true;
+    }
+
+    // Stack method
+    public static boolean stackCheck(String text) {
 
         Stack<Character> stack = new Stack<>();
 
@@ -31,65 +44,25 @@ class StackStrategy implements PalindromeStrategy {
 
         return true;
     }
-}
-
-/**
- * Deque-based palindrome strategy
- */
-class DequeStrategy implements PalindromeStrategy {
-
-    public boolean checkPalindrome(String text) {
-
-        Deque<Character> deque = new ArrayDeque<>();
-
-        for (char c : text.toCharArray()) {
-            deque.addLast(c);
-        }
-
-        while (deque.size() > 1) {
-
-            if (!deque.removeFirst().equals(deque.removeLast())) {
-                return false;
-            }
-        }
-
-        return true;
-    }
-}
-
-/**
- * Context class that uses strategy
- */
-class PalindromeChecker {
-
-    private PalindromeStrategy strategy;
-
-    public PalindromeChecker(PalindromeStrategy strategy) {
-        this.strategy = strategy;
-    }
-
-    public boolean check(String text) {
-        return strategy.checkPalindrome(text);
-    }
-}
-
-/**
- * Application entry point
- */
-public class PalindromeCheckerApp {
 
     public static void main(String[] args) {
 
-        String word = "level";
+        String word = "racecar";
 
-        // Choose strategy dynamically
-        PalindromeChecker checker =
-                new PalindromeChecker(new StackStrategy());
+        // Two pointer timing
+        long start1 = System.nanoTime();
+        boolean result1 = twoPointerCheck(word);
+        long end1 = System.nanoTime();
 
-        if (checker.check(word)) {
-            System.out.println(word + " is a Palindrome");
-        } else {
-            System.out.println(word + " is NOT a Palindrome");
-        }
+        // Stack timing
+        long start2 = System.nanoTime();
+        boolean result2 = stackCheck(word);
+        long end2 = System.nanoTime();
+
+        System.out.println("Two Pointer Result : " + result1);
+        System.out.println("Execution Time : " + (end1 - start1) + " ns\n");
+
+        System.out.println("Stack Result : " + result2);
+        System.out.println("Execution Time : " + (end2 - start2) + " ns");
     }
 }
