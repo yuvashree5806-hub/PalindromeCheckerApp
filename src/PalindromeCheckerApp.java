@@ -1,17 +1,17 @@
 /**
- * UC10 - Palindrome Checker ignoring spaces and case
- * Demonstrates string preprocessing before checking palindrome.
+ * UC11 - Encapsulation of Palindrome Logic
+ * Demonstrates OOP concepts such as encapsulation
+ * and single responsibility principle.
  *
  * @author Yuvashree
  * @version 1.0
  */
 
-public class PalindromeCheckerApp {
+class PalindromeChecker {
 
-    // Method to check palindrome after preprocessing
-    public static boolean isPalindrome(String text) {
+    // Method that checks if a string is a palindrome
+    public boolean checkPalindrome(String text) {
 
-        // Normalize string: remove spaces and convert to lowercase
         text = text.replaceAll("\\s+", "").toLowerCase();
 
         int start = 0;
@@ -29,15 +29,20 @@ public class PalindromeCheckerApp {
 
         return true;
     }
+}
+
+public class PalindromeCheckerApp {
 
     public static void main(String[] args) {
 
-        String input = "Never Odd Or Even";
+        PalindromeChecker checker = new PalindromeChecker();
 
-        if (isPalindrome(input)) {
-            System.out.println("\"" + input + "\" is a Palindrome");
+        String input = "Madam";
+
+        if (checker.checkPalindrome(input)) {
+            System.out.println(input + " is a Palindrome");
         } else {
-            System.out.println("\"" + input + "\" is NOT a Palindrome");
+            System.out.println(input + " is NOT a Palindrome");
         }
     }
 }
